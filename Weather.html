@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather </title>
+</head>
+<body style="text-align: center;">
+<h1> Weather </h1>
+<label for = "city"> Enter city: </label>
+<input id = "city"></input>
+<button id = "weather" onclick="weather()"> <font size="+1"><b>Click to get weather </b></font> </button>
+<br></br>
+<label id ="output"> Weather data:  </label>
+<script type="text/javascript">
+	function weather()
+	{
+		const city = document.getElementById("city").value;
+		const apiKey = 'e9c354ea2ec33e73924c377d68d822f4';
+		const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+		if (city == "")
+		{
+			alert("Please enter a city!");
+		}
+		else
+		{
+		fetch(apiUrl)
+		.then(response =>{
+			if(response.ok)
+			{
+				return response.json()
+			}
+			else{
+				throw new Error("Response wasn't ok!")
+			}
+		})
+		.then (data =>{
+			const temp = data.main.temp;
+			const description = data.weather[0].description;
+			document.getElementById("output").innerHTML = `<b> <p>Temperature in ${city} : ${Math.round((temp - 273.15) * 10) /10} °C </p> <b> 
+			<p>Weather: ${description} </p>`;
+		})
+		.catch(error=>
+		{
+			console.error("Error", error);
+		});
+}
+
+	}
+</script>
+</body>
+</html>
